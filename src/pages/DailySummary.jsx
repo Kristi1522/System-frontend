@@ -11,7 +11,7 @@ import {
   LabelList
 } from "recharts";
 
-const API_URL = "https://system-yp01.onrender.com";
+const API_URL = "https://system-backend-0i7a.onrender.com"
 
 export default function DailySummary() {
   const [data, setData] = useState([]);
