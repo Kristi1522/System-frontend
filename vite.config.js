@@ -7,28 +7,28 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'robots.txt', 'apple-touch-icon.png'],
+      includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Emri i Aplikacionit',
-        short_name: 'AppEmri',
-        description: 'Ky është një app i ndërtuar me React + Vite si PWA',
-        theme_color: '#ffffff',
-        background_color: '#ffffff',
+        name: 'Restorant Manager',
+        short_name: 'Restorant',
+        description: 'Paneli i brendshëm i menaxhimit për stafin e restorantit.',
+        theme_color: '#0f172a',
+        background_color: '#f8fafc',
         display: 'standalone',
         start_url: '/',
         icons: [
           {
-            src: '222.png',
+            src: '/222.png',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: '222.png',
+            src: '/222.png',
             sizes: '512x512',
             type: 'image/png',
-          },
-        ],
-      },
-    }),
-  ],
+          }
+        ]
+      }
+    })
+  ]
 });
