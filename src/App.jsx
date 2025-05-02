@@ -151,6 +151,15 @@ export default function App() {
           }
         />
       </Routes>
+      <Route path="/tables" element={<PrivateRoute user={user}><Tables /></PrivateRoute>} />
+      <Route
+  path="/admin-tables"
+  element={
+    <PrivateRoute user={user} allowedRoles={['admin']}>
+      <AdminTables />
+    </PrivateRoute>
+  }
+/>
 
       {/* Install App button (visible only if available) */}
       {showInstallButton && (
