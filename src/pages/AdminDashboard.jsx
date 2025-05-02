@@ -1,37 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  LayoutDashboard,
-  Users,
-  FileText,
-  BarChart2,
-  LogOut,
-  Pencil,
-  Trash2,
-  UserPlus,
-  PlusSquare,
-  CalendarDays,
-} from "lucide-react";
 import axios from "axios";
 
 const API_URL = "https://system-backend-0i7a.onrender.com";
 
-const menu = [
-  { name: "Dashboard", icon: <LayoutDashboard />, path: "/" },
-  { name: "Orders", icon: <FileText />, path: "/orders" },
-  { name: "Reports", icon: <BarChart2 />, path: "/reports" },
-];
-
-const actions = [
-  { name: "Add Dish", icon: <PlusSquare />, path: "/add-dish" },
-  { name: "Edit Menu", icon: <Pencil />, path: "/edit-menu" },
-  { name: "Delete Dish", icon: <Trash2 />, path: "/delete-dish" },
-  { name: "Register User", icon: <UserPlus />, path: "/register-user" },
-  { name: "Daily Summary", icon: <CalendarDays />, path: "/daily-summary" },
-];
-
 export default function AdminDashboard() {
-  const [selected, setSelected] = useState("Dashboard");
   const [summary, setSummary] = useState({ totalIncome: 0, totalOrders: 0, orders: [] });
   const [expandedUsers, setExpandedUsers] = useState({});
   const token = localStorage.getItem("token");
@@ -90,113 +63,91 @@ export default function AdminDashboard() {
   }, {});
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white border-r shadow-sm p-4">
-        <h1 className="text-xl font-bold mb-6">Restorant Admin</h1>
-        <nav className="space-y-2">
-          {menu.map((item) => (
+    <div className="min-h-screen p-6 bg-background text-textdark">
+      <h2 className="text-4xl font-bold text-primary mb-6">📊 Admin Dashboard</h2>
+      <div className="mb-8">
+        <p className="text-lg mb-2">
+          <strong>Total Income:</strong> {summary.totalIncome}€
+        </p>
+        <p className="text-lg">
+          <strong>Number of Orders:</strong> {summary.totalOrders}
+        </p>
+      </div>
+
+      <div className="bg-white shadow-md rounded-lg p-6 mb-10">
+        <h3 className="text-2xl font-semibold mb-4 text-secondary">🛠️ Menu Management</h3>
+        <ul className="space-y-3">
+          <li>
+            <Link to="/add-dish" className="text-primary hover:text-highlight transition">
+              ➕ Add Dish
+            </Link>
+          </li>
+          <li>
+            <Link to="/edit-menu" className="text-primary hover:text-highlight transition">
+              ✏️ Edit Menu
+            </Link>
+          </li>
+          <li>
+            <Link to="/delete-dish" className="text-primary hover:text-highlight transition">
+              ❌ Delete Dish
+            </Link>
+          </li>
+          <li>
+            <Link to="/register-user" className="text-primary hover:text-highlight transition">
+              🧑‍💼 Register User
+            </Link>
+          </li>
+          <li>
+            <Link to="/daily-summary" className="text-primary hover:text-highlight transition">
+              📅 Daily Summary
+            </Link>
+          </li>
+        </ul>
+      </div>
+
+      <h3 className="text-2xl font-semibold mb-4 text-secondary">🧾 Orders by Waiters</h3>
+
+      {Object.keys(ordersByUser).map((email) => (
+        <div key={email} className="mb-8 bg-white rounded-lg shadow p-4">
+          <h4 className="text-lg font-semibold flex justify-between items-center mb-2">
+            👤 {email}
             <button
-              key={item.name}
-              onClick={() => setSelected(item.name)}
-              className={`flex items-center w-full text-left gap-3 p-2 rounded-lg hover:bg-gray-100 transition ${
-                selected === item.name ? "bg-gray-200 font-semibold" : ""
-              }`}
+              onClick={() => toggleExpand(email)}
+              className="bg-primary text-white px-3 py-1 rounded hover:bg-secondary transition"
             >
-              {item.icon} {item.name}
+              {expandedUsers[email] ? "Hide" : "Show"}
             </button>
-          ))}
-        </nav>
-        <div className="absolute bottom-4 left-4 right-4">
-          <button className="w-full flex items-center gap-2 justify-start text-sm text-gray-700 hover:text-red-600">
-            <LogOut className="w-4 h-4" /> Log out
-          </button>
-        </div>
-      </aside>
+          </h4>
 
-      {/* Main Content */}
-      <main className="flex-1 p-6">
-        <h2 className="text-2xl font-semibold mb-4">{selected}</h2>
-
-        {selected === "Dashboard" && (
-          <>
-            <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="rounded-xl border bg-white p-6 shadow-sm">
-                  <h3 className="text-lg font-medium text-gray-700">Total Income</h3>
-                  <p className="text-2xl font-bold mt-2">{summary.totalIncome}€</p>
-                </div>
-                <div className="rounded-xl border bg-white p-6 shadow-sm">
-                  <h3 className="text-lg font-medium text-gray-700">Total Orders</h3>
-                  <p className="text-2xl font-bold mt-2">{summary.totalOrders}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white shadow-md rounded-lg p-6 mt-10">
-              <h3 className="text-xl font-semibold mb-4 text-secondary">🛠️ Menu Management</h3>
-              <ul className="space-y-3">
-                {actions.map((action) => (
-                  <li key={action.name}>
-                    <Link
-                      to={action.path}
-                      className="flex items-center gap-2 text-primary hover:text-highlight transition"
-                    >
-                      {action.icon} {action.name}
-                    </Link>
-                  </li>
+          {expandedUsers[email] && (
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b">
+                  <th className="p-2">Total</th>
+                  <th className="p-2">Date</th>
+                  <th className="p-2">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ordersByUser[email].map((order) => (
+                  <tr key={order._id} className="border-b hover:bg-gray-100">
+                    <td className="p-2">{order.total}€</td>
+                    <td className="p-2">{new Date(order.createdAt).toLocaleString()}</td>
+                    <td className="p-2">
+                      <button
+                        onClick={() => handleDeleteOrder(order._id)}
+                        className="text-red-600 hover:text-red-800 font-semibold transition"
+                      >
+                        ❌ Delete
+                      </button>
+                    </td>
+                  </tr>
                 ))}
-              </ul>
-            </div>
-          </>
-        )}
-
-        {selected === "Orders" && (
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold">Orders by Waiters</h3>
-            {Object.keys(ordersByUser).map((email) => (
-              <div key={email} className="mb-6 bg-white rounded-lg shadow p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <h4 className="text-lg font-semibold">👤 {email}</h4>
-                  <button
-                    onClick={() => toggleExpand(email)}
-                    className="bg-primary text-white px-3 py-1 rounded hover:bg-secondary transition"
-                  >
-                    {expandedUsers[email] ? "Hide" : "Show"}
-                  </button>
-                </div>
-                {expandedUsers[email] && (
-                  <table className="w-full text-left border-collapse">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="p-2">Total</th>
-                        <th className="p-2">Date</th>
-                        <th className="p-2">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {ordersByUser[email].map((order) => (
-                        <tr key={order._id} className="border-b hover:bg-gray-100">
-                          <td className="p-2">{order.total}€</td>
-                          <td className="p-2">{new Date(order.createdAt).toLocaleString()}</td>
-                          <td className="p-2">
-                            <button
-                              onClick={() => handleDeleteOrder(order._id)}
-                              className="text-red-600 hover:text-red-800 font-semibold transition"
-                            >
-                              ❌ Delete
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-      </main>
+              </tbody>
+            </table>
+          )}
+        </div>
+      ))}
     </div>
   );
 }
