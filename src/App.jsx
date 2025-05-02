@@ -17,6 +17,8 @@ import Navbar from './components/Navbar';
 export default function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstallButton, setShowInstallButton] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -25,6 +27,34 @@ export default function App() {
     }
     setLoading(false);
   }, []);
+
+  // PWA install prompt
+  useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallButton(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handler);
+
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstallClick = () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        } else {
+          console.log('User dismissed the install prompt');
+        }
+        setDeferredPrompt(null);
+        setShowInstallButton(false);
+      });
+    }
+  };
 
   if (loading) return null;
 
@@ -121,6 +151,27 @@ export default function App() {
           }
         />
       </Routes>
+
+      {/* Install App button (visible only if available) */}
+      {showInstallButton && (
+        <button
+          onClick={handleInstallClick}
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            padding: '10px 16px',
+            backgroundColor: '#4f46e5',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+            zIndex: 1000
+          }}
+        >
+          Install App
+        </button>
+      )}
     </>
   );
 }
