@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const API_URL = 'https://system-backend-0i7a.onrender.com';
+
 const Reservations = () => {
   const [reservations, setReservations] = useState([]);
   const [date, setDate] = useState('');
@@ -8,15 +10,13 @@ const Reservations = () => {
   const [note, setNote] = useState('');
   const [error, setError] = useState('');
 
-  // Merr rezervimet nga backend
   const fetchReservations = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('/api/reservations/my', {
+      const res = await axios.get(`${API_URL}/api/reservations/my`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // Kontroll nëse është array
       if (Array.isArray(res.data)) {
         setReservations(res.data);
         setError('');
@@ -25,7 +25,7 @@ const Reservations = () => {
         setError('Të dhënat nuk janë në formatin e pritur.');
       }
     } catch (err) {
-      console.error('Gabim gjatë marrjes së rezervimeve:', err);
+      console.error('Gabim gjatë marrjes së rezervimeve:', err.response?.data || err.message);
       setError('Nuk u morën dot rezervimet.');
     }
   };
@@ -34,14 +34,13 @@ const Reservations = () => {
     fetchReservations();
   }, []);
 
-  // Dërgon një rezervim të ri
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
 
     try {
       await axios.post(
-        '/api/reservations',
+        `${API_URL}/api/reservations`,
         { date, people, note },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -49,9 +48,9 @@ const Reservations = () => {
       setDate('');
       setPeople('');
       setNote('');
-      fetchReservations(); // rifresko listën pas shtimit
+      fetchReservations();
     } catch (err) {
-      console.error('Gabim gjatë shtimit:', err);
+      console.error('Gabim gjatë shtimit:', err.response?.data || err.message);
       setError('Rezervimi nuk u shtua.');
     }
   };
