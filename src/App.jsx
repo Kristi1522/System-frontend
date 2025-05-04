@@ -15,8 +15,6 @@ import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
 
 export default function App() {
-  const reservationRoutes = require('./routes/reservations');
-app.use('/api/reservations', reservationRoutes);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
