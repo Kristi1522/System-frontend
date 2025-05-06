@@ -30,8 +30,6 @@ export default function Navbar({ user }) {
             <>
               <Link className="hover:text-highlight transition" to="/orders">Orders</Link>
               <Link className="hover:text-highlight transition" to="/my-orders">My Orders</Link>
-              <Link clasName="hover:text-highlight transition"to="/my-reservations">📋 Rezervimet</Link>
-            
             </>
           )}
 
