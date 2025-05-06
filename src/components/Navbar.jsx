@@ -11,6 +11,7 @@ export default function Navbar({ user }) {
   };
 
   return (
+    
     <nav className="sticky top-0 w-full bg-primary text-white p-4 flex justify-center items-center gap-6 shadow-md z-50">
       {!user ? (
         <Link className="hover:text-highlight transition" to="/login">Login</Link>
