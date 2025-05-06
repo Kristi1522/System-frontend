@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   LayoutDashboard,
-  Users,
   FileText,
   BarChart2,
   LogOut,
@@ -11,6 +10,7 @@ import {
   UserPlus,
   PlusSquare,
   CalendarDays,
+  CalendarPlus,
 } from "lucide-react";
 import axios from "axios";
 
@@ -28,6 +28,8 @@ const actions = [
   { name: "Delete Dish", icon: <Trash2 />, path: "/delete-dish" },
   { name: "Register User", icon: <UserPlus />, path: "/register-user" },
   { name: "Daily Summary", icon: <CalendarDays />, path: "/daily-summary" },
+  { name: "Create Reservation", icon: <CalendarPlus />, path: "/admin-create-reservation" }, 
+ 
 ];
 
 export default function AdminDashboard() {
