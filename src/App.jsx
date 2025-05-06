@@ -12,7 +12,7 @@ import EditMenu from './pages/EditMenu';
 import DeleteDish from './pages/DeleteDish';
 import RegisterUser from './pages/RegisterUser';
 import PrivateRoute from './components/PrivateRoute';
-import Navbar from './components/Navbar';
+import Navbar from './components/NavBar';
 
 export default function App() {
   const [user, setUser] = useState(null);
