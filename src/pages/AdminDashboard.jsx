@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   FileText,
@@ -28,8 +28,7 @@ const actions = [
   { name: "Delete Dish", icon: <Trash2 />, path: "/delete-dish" },
   { name: "Register User", icon: <UserPlus />, path: "/register-user" },
   { name: "Daily Summary", icon: <CalendarDays />, path: "/daily-summary" },
-  { name: "Create Reservation", icon: <CalendarPlus />, path: "/admin-create-reservation" }, 
- 
+  { name: "Create Reservation", icon: <CalendarPlus />, path: "/admin-create-reservation" },
 ];
 
 export default function AdminDashboard() {
@@ -37,6 +36,7 @@ export default function AdminDashboard() {
   const [summary, setSummary] = useState({ totalIncome: 0, totalOrders: 0, orders: [] });
   const [expandedUsers, setExpandedUsers] = useState({});
   const token = localStorage.getItem("token");
+  const navigate = useNavigate(); // për navigim real
 
   useEffect(() => {
     fetchSummary();
@@ -100,7 +100,10 @@ export default function AdminDashboard() {
           {menu.map((item) => (
             <button
               key={item.name}
-              onClick={() => setSelected(item.name)}
+              onClick={() => {
+                setSelected(item.name);
+                navigate(item.path);
+              }}
               className={`flex items-center w-full text-left gap-3 p-2 rounded-lg hover:bg-gray-100 transition ${
                 selected === item.name ? "bg-gray-200 font-semibold" : ""
               }`}
