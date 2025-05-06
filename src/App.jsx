@@ -41,6 +41,12 @@ export default function App() {
 
     return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
+  {user && (
+    <div style={{ position: "absolute", top: 0, left: 10, fontSize: "14px", background: "#fff", color: "#000", padding: "4px" }}>
+      Logged in as: {user.email} ({user.role})
+    </div>
+  )}
+  
 
   const handleInstallClick = () => {
     if (deferredPrompt) {
