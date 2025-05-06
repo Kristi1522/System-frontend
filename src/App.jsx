@@ -96,7 +96,7 @@ export default function App() {
 <Route
   path="/my-reservations"
   element={
-    <PrivateRoute user={user} allowedRoles={['employee']}>
+    <PrivateRoute user={user} allowedRoles={['admin']}>
       <MyReservations />
     </PrivateRoute>
   }
