@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import AdminMeetings from './pages/AdminMeetings';
 import MyMeetings from './pages/MyMeetings';
-
+import AdminCreateMeeting from "./pages/AdminCreateMeeting";
 import DailySummary from './pages/DailySummary';
 import Login from './pages/login';
 import Profile from './pages/Profile';
@@ -103,6 +103,14 @@ export default function App() {
   element={
     <PrivateRoute user={user} allowedRoles={['employee', 'admin']}>
       <MyMeetings />
+    </PrivateRoute>
+  }
+/>
+<Route
+  path="/admin-create-meeting"
+  element={
+    <PrivateRoute user={user} allowedRoles={["admin"]}>
+      <AdminCreateMeeting />
     </PrivateRoute>
   }
 />

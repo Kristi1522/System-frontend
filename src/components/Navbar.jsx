@@ -38,6 +38,9 @@ export default function Navbar({ user }) {
                 📋 Të gjitha rezervimet
               </Link>
               <Link to="/admin-meetings" className="hover:text-highlight transition">Takimet</Link>
+              <Link to="/admin-create-meeting" className="hover:text-highlight transition">
+  ➕ Shto Takim
+</Link>
             </>
           )}
 
