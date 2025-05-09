@@ -37,6 +37,7 @@ export default function Navbar({ user }) {
               <Link className="hover:text-highlight transition" to="/admin-reservations">
                 📋 Të gjitha rezervimet
               </Link>
+              <Link to="/admin-meetings" className="hover:text-highlight transition">Takimet</Link>
             </>
           )}
 
@@ -52,6 +53,7 @@ export default function Navbar({ user }) {
               <Link className="hover:text-highlight transition" to="/my-reservations">
                 Rezervimet e mia
               </Link>
+              <Link to="/my-meetings" className="hover:text-highlight transition">Takimet e mia</Link>
             </>
           )}
 
