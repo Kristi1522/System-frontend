@@ -46,6 +46,14 @@ export default function DailySummary() {
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-4xl font-bold text-primary">📅 Daily Revenue by Waiters</h2>
         <div className="flex items-center gap-2">
+          <label htmlFor="date" className="text-sm font-medium">Select date:</label>
+          <input
+            type="date"
+            id="date"
+            className="border px-3 py-1 rounded shadow-sm"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+          />
         </div>
       </div>
 
